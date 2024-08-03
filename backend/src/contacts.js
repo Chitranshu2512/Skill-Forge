@@ -1,0 +1,1 @@
+export const DB_NAME = "RC_Course_LMS" 
