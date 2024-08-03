@@ -82,3 +82,9 @@ export const changePassword = asyncHandler(async(req, res) => {
     return res.status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully"))
 })
+
+
+// this is undefined, have to do it
+export const addCourse = asyncHandler(async(req, res) => {
+
+})
