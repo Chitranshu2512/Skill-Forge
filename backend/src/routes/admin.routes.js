@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changePassword, loginAdmin, logoutAdmin, addCourse} from "../controllers/admin.controller.js";
+import { changePassword, loginAdmin, logoutAdmin, addCourse, userRegister} from "../controllers/admin.controller.js";
 import { verifyJWTToken } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -14,6 +14,8 @@ router.route("/addCourse").post(verifyJWTToken, upload.fields([
         maxCount: 1
     }
 ]), addCourse)
+
+router.route("/userRegister").post(userRegister)
 
 
 export default router

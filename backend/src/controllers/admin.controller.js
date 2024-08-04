@@ -88,3 +88,6 @@ export const changePassword = asyncHandler(async(req, res) => {
 export const addCourse = asyncHandler(async(req, res) => {
 
 })
+
+// this is userRegister
+export const userRegister = asyncHandler(async(req, res) => {})

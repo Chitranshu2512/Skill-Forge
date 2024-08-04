@@ -1,0 +1,1 @@
+// this will allow admin to edit the course details

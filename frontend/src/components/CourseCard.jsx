@@ -1,0 +1,1 @@
+// this is the card componet that shows a  individual course
