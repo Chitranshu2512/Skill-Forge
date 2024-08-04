@@ -26,10 +26,11 @@ const UserForm = () => {
     e.preventDefault();
     try {
       // Use the environment variable for the API URL
-      const apiUrl = process.env.BACKEND_URL;
+      const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-      await axios.post(`${apiUrl}/register`, formData);
-      navigate('/main');
+
+      await axios.post(`${apiUrl}/api/user/register`, formData);
+      navigate('/courses');
     } 
     catch (error) {
       console.error('Error registering user:', error);
