@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const UserForm = () => {
-
+  
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -11,8 +11,41 @@ const UserForm = () => {
     institute: ''
   });
 
+  const [errors, setErrors] = useState({
+    fullName: '',
+    email: '',
+    phoneNumber: ''
+  });
 
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    let isValid = true;
+    let errors = { fullName: '', email: '', phoneNumber: '' };
+
+    // Validate fullName
+    if (!formData.fullName.trim()) {
+      errors.fullName = 'Full Name is required';
+      isValid = false;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      errors.email = 'Invalid email address';
+      isValid = false;
+    }
+
+    // Validate phoneNumber
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(formData.phoneNumber)) {
+      errors.phoneNumber = 'Phone number must be 10 digits';
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,16 +57,17 @@ const UserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Use the environment variable for the API URL
-      const apiUrl = import.meta.env.VITE_BACKEND_URL;
+    if (validateForm()) {
+      try {
+        // Use the environment variable for the API URL
+        const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-
-      await axios.post(`${apiUrl}/api/user/register`, formData);
-      navigate('/courses');
-    } 
-    catch (error) {
-      console.error('Error registering user:', error);
+        await axios.post(`${apiUrl}/api/user/register`, formData);
+        navigate('/courses');
+      } 
+      catch (error) {
+        console.error('Error registering user:', error);
+      }
     }
   };
 
@@ -51,6 +85,7 @@ const UserForm = () => {
             onChange={handleChange}
             required
           />
+          {errors.fullName && <p className="error">{errors.fullName}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
@@ -62,6 +97,7 @@ const UserForm = () => {
             onChange={handleChange}
             required
           />
+          {errors.email && <p className="error">{errors.email}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="phoneNumber">Phone Number:</label>
@@ -73,6 +109,7 @@ const UserForm = () => {
             onChange={handleChange}
             required
           />
+          {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="institute">Institute:</label>
