@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ImageSlider from './ImageSlider';
 import axios from 'axios';
 
 const UserForm = () => {
-  
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -23,20 +23,17 @@ const UserForm = () => {
     let isValid = true;
     let errors = { fullName: '', email: '', phoneNumber: '' };
 
-    // Validate fullName
     if (!formData.fullName.trim()) {
       errors.fullName = 'Full Name is required';
       isValid = false;
     }
 
-    // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       errors.email = 'Invalid email address';
       isValid = false;
     }
 
-    // Validate phoneNumber
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.phoneNumber)) {
       errors.phoneNumber = 'Phone number must be 10 digits';
@@ -59,70 +56,94 @@ const UserForm = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        // Use the environment variable for the API URL
         const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
         await axios.post(`${apiUrl}/api/user/register`, formData);
         navigate('/courses');
-      } 
-      catch (error) {
+      } catch (error) {
         console.error('Error registering user:', error);
       }
     }
   };
 
   return (
-    <div className="user-form-container">
-      <form className="user-form" onSubmit={handleSubmit}>
-        <h2>User Information</h2>
-        <div className="form-group">
-          <label htmlFor="fullName">Full Name:</label>
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-          />
-          {errors.fullName && <p className="error">{errors.fullName}</p>}
+    <div className="flex flex-col md:flex-row h-screen">
+
+      
+      <div className="md:w-1/2 w-full h-full ">
+        <ImageSlider />
+      </div>
+
+      
+      <div className="md:w-1/2 w-full h-full flex items-center justify-center bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200">
+        <div className="w-full max-w-md bg-white shadow-lg rounded-lg border border-gray-200 p-1 animation-fadeIn">
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 m-2">User Information</h2>
+          <form className="space-y-4 p-4" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="fullName" className="block text-gray-700 font-medium mb-1">Full Name:</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder='Enter your name'
+                value={formData.fullName}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ${errors.fullName ? 'border-red-500' : 'border-gray-300'}`}
+                required
+              />
+              {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email" className="block text-gray-700 font-medium mb-1">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder='Enter your email'
+                value={formData.email}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                required
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="phoneNumber" className="block text-gray-700 font-medium mb-1">Phone Number:</label>
+              <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                placeholder='Enter your phone'
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
+                required
+              />
+              {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="institute" className="block text-gray-700 font-medium mb-1">Institute:</label>
+              <input
+                type="text"
+                id="institute"
+                name="institute"
+                placeholder='(optional)'
+                value={formData.institute}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300"
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="phoneNumber">Phone Number:</label>
-          <input
-            type="text"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-          />
-          {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="institute">Institute:</label>
-          <input
-            type="text"
-            id="institute"
-            name="institute"
-            value={formData.institute}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      </div>
     </div>
   );
 };
