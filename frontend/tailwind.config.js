@@ -24,6 +24,9 @@ export default {
           },
         },
       },
+      backgroundImage: {
+        'wave-pattern': "url('https://www.transparenttextures.com/patterns/wave.png')",
+      },
     },
   },
   plugins: [

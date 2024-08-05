@@ -7,10 +7,13 @@ const courseSchema = new Schema({
         trim: true
     },
 
-    descriptiion: {
+    description: {
         type: String,
         required: true,
         trim: true
+    },
+    details:{
+        type: [String],
     },
 
     imageUrl:{

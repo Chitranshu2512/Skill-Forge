@@ -1,4 +1,5 @@
 import { Admin } from "../models/admin.model.js";
+import {Course} from "../models/course.model.js"
 import { ApiError } from "../utility/ApiError.js";
 import { ApiResponse } from "../utility/ApiResponse.js"
 import {asyncHandler} from "../utility/asyncHandler.js"
@@ -84,10 +85,36 @@ export const changePassword = asyncHandler(async(req, res) => {
 })
 
 
-// this is undefined, have to do it
+
 export const addCourse = asyncHandler(async(req, res) => {
+    const { title, description, details, imageUrl, discountedPrice, actualPrice, duration } = req.body;
 
+  // Validate required fields
+  if (!title || !description || !details || !imageUrl || !actualPrice) {
+    res.status(400);
+    throw new Error('Please provide all required fields');
+  }
+
+  // Create new course
+  const course = await Course.create({
+    title,
+    description,
+    details,
+    imageUrl,
+    discountedPrice,
+    actualPrice,
+    duration,
+  });
+
+  // Save course to the database
+  const createdCourse = await Course.findById(course._id);
+
+
+  if(!createdCourse){
+    throw new ApiError(500, "something went wrong while adding a new course")
+  }
+
+
+  return res.status(200)
+  .json(new ApiResponse(200, createdCourse, "Course added successfully"))
 })
-
-// this is userRegister
-export const userRegister = asyncHandler(async(req, res) => {})
