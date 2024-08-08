@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ImageSlider from './ImageSlider';
 import axios from 'axios';
 
-const UserForm = () => {
+const UserForm = ({SetIsRegistered}) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -58,6 +58,7 @@ const UserForm = () => {
       try {
         const apiUrl = import.meta.env.VITE_BACKEND_URL;
         await axios.post(`${apiUrl}/api/user/register`, formData);
+        SetIsRegistered(true)
         navigate('/courses');
       } catch (error) {
         console.error('Error registering user:', error);

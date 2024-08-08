@@ -118,3 +118,51 @@ export const addCourse = asyncHandler(async(req, res) => {
   return res.status(200)
   .json(new ApiResponse(200, createdCourse, "Course added successfully"))
 })
+
+
+export const editCourse = asyncHandler(async(req, res) => {
+    const { courseId} = req.params;
+
+
+    const course = await Course.findById(courseId)
+
+    if(!course){
+        throw new ApiError(404, "Course does not exist")
+    }
+    res.status(200).json(course)
+
+    
+})
+
+
+export const updateCourse = asyncHandler(async(req, res) => {
+    const { courseId } = req.params;
+    const { title, description, details, imageUrl, discountedPrice, actualPrice, duration } = req.body;
+
+  // Validate required fields
+  if (!title || !description || !details || !imageUrl || !actualPrice) {
+    res.status(400);
+    throw new Error('Please provide all required fields');
+  }
+
+  // update course
+    const course = await Course.findByIdAndUpdate(courseId, 
+        {
+        $set: {
+            title,
+            description,
+            details,
+            imageUrl,
+            discountedPrice,
+            actualPrice,
+            duration
+        }
+        },
+        {
+            new: true
+        }
+    )
+return res.status(200)
+.json(new ApiResponse(200, course, "Course updated"))
+
+})

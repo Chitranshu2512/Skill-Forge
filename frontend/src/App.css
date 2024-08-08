@@ -40,3 +40,36 @@
 .read-the-docs {
   color: #888;
 }
+
+
+
+/* App.css */
+.courses-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  transition: filter 0.3s ease; /* Ensure smooth transition */
+}
+
+
+.courses-page.blur {
+  filter: blur(0.5px); /* Reduce the blur effect */
+  transition: filter 0.3s ease; 
+}
+
+
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2); /* Slightly lighter overlay */
+}
+
+
+
