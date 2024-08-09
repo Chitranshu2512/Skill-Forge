@@ -16,12 +16,15 @@ const CourseCard = ({ course, admin }) => {
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{course.title}</div>
         <p className="text-gray-700 text-base">{course.description}</p>
+
         <ul className="list-disc list-inside mt-2">
           {course.details.slice(0,3).map((detail, index) => (
             <li key={index}>{detail}</li>
           ))}
         </ul>
+
       </div>
+
       <div className="px-6 pt-4 pb-2">
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
           ${course.discountedPrice} (Discounted)
@@ -33,6 +36,7 @@ const CourseCard = ({ course, admin }) => {
           {course.duration}
         </span>
       </div>
+      
       <div className="px-6 pt-4 pb-2">
         {admin ? (
           <button 

@@ -166,3 +166,29 @@ return res.status(200)
 .json(new ApiResponse(200, course, "Course updated"))
 
 })
+
+export const getCourses = asyncHandler(async(req, res)=> {
+
+    let authorized = true;
+    const admin = req.admin
+    
+    if(!admin){
+      authorized = false
+    }
+
+    try {
+        // Fetch all courses from the database
+        const courses = await Course.find({});
+    
+        // If courses are found, send them in the response
+        if (courses.length > 0) {
+          res.status(200).json({courses, authorized});
+        } else {
+          // If no courses are found, send an empty array
+          res.status(200).json([]);
+        }
+      } catch (error) {
+        // Handle errors and send a server error response
+        res.status(500).json({ message: 'Server error', error: error.message });
+      }
+})

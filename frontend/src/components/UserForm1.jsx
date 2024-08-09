@@ -44,24 +44,29 @@ const UserForm1 = ({ setIsRegistered }) => {
   };
 
   const handleChange = (e) => {
+
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value
     });
+    
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
+
       try {
         const apiUrl = import.meta.env.VITE_BACKEND_URL;
         await axios.post(`${apiUrl}/api/user/register`, formData, {withCredentials: true});
         setIsRegistered(true);
-        navigate('/courses');
       } catch (error) {
         console.error('Error registering user:', error);
       }
+
     }
   };
 

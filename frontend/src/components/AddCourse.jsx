@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const AddCourse = () => {
+
   const [courseData, setCourseData] = useState({
     title: '',
     description: '',
@@ -13,21 +14,29 @@ const AddCourse = () => {
   });
 
   const handleChange = (e) => {
+
     setCourseData({
       ...courseData,
+      // The square brackets [] around e.target.name are used to create a computed property name in JavaScript.
+      // Without the square brackets, e.target.name would be treated as a literal key name, not the value of e.target.name.
       [e.target.name]: e.target.value,
     });
+
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
     try {
       const apiUrl = import.meta.env.VITE_BACKEND_URL;
       const response = await axios.post(`${apiUrl}/api/admin/addCourse`, {
         ...courseData,
         details: courseData.details.split('\n'), // Convert newline-separated details to an array
       });
+
       console.log('Course created:', response.data);
+      
       // Reset form
       setCourseData({
         title: '',
@@ -38,7 +47,8 @@ const AddCourse = () => {
         actualPrice: '',
         duration: '',
       });
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Failed to create course:', error);
     }
   };

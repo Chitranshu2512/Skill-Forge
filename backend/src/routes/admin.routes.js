@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changePassword, loginAdmin, logoutAdmin, addCourse, editCourse, updateCourse} from "../controllers/admin.controller.js";
+import { changePassword, loginAdmin, logoutAdmin, addCourse, editCourse, updateCourse, getCourses} from "../controllers/admin.controller.js";
 import { verifyJWTTokenAdmin } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -21,6 +21,10 @@ router.route("/changePassword").post(verifyJWTTokenAdmin, changePassword);
 router.route("/addCourse").post(addCourse)
 
 router.route("/editCourse/:courseId").get(editCourse)
+
+// router.route("/courses").get(verifyJWTTokenAdmin, getCourses)
+router.route("/courses").get(getCourses)
+
 router.route("/updateCourse/:courseId").post(updateCourse)
 
 

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios';
 
 function EditCourseModal() {
+
     const { courseId } = useParams();
     const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -17,16 +18,18 @@ function EditCourseModal() {
       });
 
       useEffect(() => {
+
         const fetchCourses = async () => {
           try {
             const response = await axios.get(`${apiUrl}/api/admin/editCourse/${courseId}`)
+
             const course = response.data;
             const detailsString = course.details.join('\n');
             course.details = detailsString
             setCourseData(course);
-            // setDetails(detailsString);
             
-          } catch (error) {
+          } 
+          catch (error) {
             console.error('Failed to fetch courses:', error);
           }
         };
@@ -35,24 +38,30 @@ function EditCourseModal() {
       }, []);
 
       const handleChange = (e) => {
+
         setCourseData({
           ...courseData,
           [e.target.name]: e.target.value,
         });
+
       };
 
 
       const handleSubmit = async (e) => {
+
         e.preventDefault();
+
         try {
           const response = await axios.post(`${apiUrl}/api/admin/updateCourse/${courseId}`, {
             ...courseData,
             details: courseData.details.split('\n'), // Convert newline-separated details to an array
           });
+          
           console.log('Course updated:', response.data);
           alert("course updated successfully")
           
-        } catch (error) {
+        } 
+        catch (error) {
           console.error('Failed to update course:', error);
         }
       };

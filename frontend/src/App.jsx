@@ -10,11 +10,16 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<UserForm />} />
-        <Route path="/courses" element={<CoursesPage />} />
-        <Route path="/admin/add-course" element={<AdminAddCourseForm />} />
-        <Route path="/admin/edit-course" element={<EditCourse/>} />
-        <Route path="/admin/edit-course/:courseId" element={<EditCourseModal />} />
+        {/* <Route path="/" element={<UserForm />} /> */}
+
+        <Route path="/" element={<CoursesPage />} />
+
+        <Route path='/admin'>
+          <Route path='add-course' element = {<AdminAddCourseForm/>}/>
+          <Route path="edit-course" element={<EditCourse/>} />
+          <Route path="edit-course/:courseId" element={<EditCourseModal />}/>
+        </Route>
+
       </Routes>
     </Router>
   );
