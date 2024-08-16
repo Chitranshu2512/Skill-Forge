@@ -12,7 +12,7 @@ const EditCourse = () => {
     const fetchCourses = async () => {
       try {
         const apiUrl = import.meta.env.VITE_BACKEND_URL;
-        const response = await axios.get(`${apiUrl}/api/admin/courses`);
+        const response = await axios.get(`${apiUrl}/api/admin/courses`, {withCredentials:true});
         setCourses(response.data.courses);
       } 
       catch (error) {

@@ -1,8 +1,23 @@
 import { Admin } from "../models/admin.model.js";
 import {Course} from "../models/course.model.js"
+import { User } from "../models/user.model.js";
 import { ApiError } from "../utility/ApiError.js";
 import { ApiResponse } from "../utility/ApiResponse.js"
 import {asyncHandler} from "../utility/asyncHandler.js"
+
+
+export const checkAdmin = asyncHandler(async(req, res) => {
+
+  let authorized = true;
+  const admin = req.admin
+  
+  if(!admin){
+    authorized = false
+  }
+
+    return res.status(200)
+    .json(new ApiResponse(200, {authorized}, "Welcome Admin"))
+})
 
 
 export const loginAdmin = asyncHandler(async(req, res) => {
@@ -31,7 +46,7 @@ export const loginAdmin = asyncHandler(async(req, res) => {
         throw new ApiError(404, "Bad Password")
     }
    
-    const accessToken = admin.generateAccessToken();
+    const adminAccessToken = admin.generateAccessToken();
 
 
     const options = {
@@ -46,8 +61,8 @@ export const loginAdmin = asyncHandler(async(req, res) => {
     };
 
     return res.status(200)
-    .cookie("accessToken", accessToken, options)
-    .json(new ApiResponse(200, {adminResponse, accessToken}, "Admin logged in"))
+    .cookie("adminAccessToken", adminAccessToken, options)
+    .json(new ApiResponse(200, {adminResponse, adminAccessToken}, "Welcome Admin"))
 })
 
 
@@ -62,8 +77,9 @@ export const logoutAdmin = asyncHandler(async(req, res) => {
     .json(new ApiResponse(200, {}, "Admin logged out"))
 })
 
+
 export const changePassword = asyncHandler(async(req, res) => {
-    const {oldPassword, newPassword, confirmPassword} = req.bodt
+    const {oldPassword, newPassword, confirmPassword} = req.body
 
     if(newPassword !== confirmPassword){
         throw new ApiError(400, "new password and confirm password must be same")
@@ -83,7 +99,6 @@ export const changePassword = asyncHandler(async(req, res) => {
     return res.status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully"))
 })
-
 
 
 export const addCourse = asyncHandler(async(req, res) => {
@@ -167,6 +182,7 @@ return res.status(200)
 
 })
 
+
 export const getCourses = asyncHandler(async(req, res)=> {
 
     let authorized = true;
@@ -191,4 +207,31 @@ export const getCourses = asyncHandler(async(req, res)=> {
         // Handle errors and send a server error response
         res.status(500).json({ message: 'Server error', error: error.message });
       }
+})
+
+
+export const getUsers = asyncHandler(async(req, res)=> {
+
+  let authorized = true;
+  const admin = req.admin
+  
+  if(!admin){
+    authorized = false
+  }
+
+  try {
+      // Fetch all users from the database
+      const users = await User.find({});
+  
+      // If users are found, send them in the response
+      if (users.length > 0) {
+        res.status(200).json({users, authorized});
+      } else {
+        // If no users are found, send an empty array
+        res.status(200).json([]);
+      }
+    } catch (error) {
+      // Handle errors and send a server error response
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
 })

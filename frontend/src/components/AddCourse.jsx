@@ -33,7 +33,7 @@ const AddCourse = () => {
       const response = await axios.post(`${apiUrl}/api/admin/addCourse`, {
         ...courseData,
         details: courseData.details.split('\n'), // Convert newline-separated details to an array
-      });
+      }, {withCredentials: true});
 
       console.log('Course created:', response.data);
       

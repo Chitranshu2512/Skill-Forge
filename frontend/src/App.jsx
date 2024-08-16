@@ -5,6 +5,8 @@ import CoursesPage from './components/CoursesPage';
 import AdminAddCourseForm from './components/AddCourse';
 import EditCourse from './components/EditCourse';
 import EditCourseModal from './components/EditCourseModal';
+import AdminLogin from './components/AdminLogin';
+import AdminPortal from './components/AdminPortal';
 
 const App = () => {
   return (
@@ -15,6 +17,7 @@ const App = () => {
         <Route path="/" element={<CoursesPage />} />
 
         <Route path='/admin'>
+          <Route path='' element = {<AdminPortal/>} />
           <Route path='add-course' element = {<AdminAddCourseForm/>}/>
           <Route path="edit-course" element={<EditCourse/>} />
           <Route path="edit-course/:courseId" element={<EditCourseModal />}/>

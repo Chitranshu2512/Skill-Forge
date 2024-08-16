@@ -7,15 +7,15 @@ import { User } from "../models/user.model.js"
 export const verifyJWTTokenAdmin = asyncHandler(async(req, res, next) => {
     try {
         // find token from cookies
-        const token = req.cookies?.accessToken
+        const adminToken = req.cookies?.adminAccessToken
         
         // if token is not present
-        if(!token){
+        if(!adminToken){
             throw new ApiError(401, "unauthorized access")
         }
     
         // decode the JWT token
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+        const decodedToken = jwt.verify(adminToken, process.env.ACCESS_TOKEN_SECRET)
     
         // find admin with the help of decodedToken
         const admin = await Admin.findById(decodedToken._id).select("-password")
